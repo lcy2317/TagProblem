@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.TagDao">
+    <resultMap id="resultMap" type="com.example.demo.entity.Tag">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="hierarchy" property="hierarchy" jdbcType="INTEGER"/>
+        <id column="parentId" property="parentId" jdbcType="INTEGER"/>
+        <id column="content" property="content" jdbcType="VARCHAR"/>
+        <id column="type" property="type" jdbcType="INTEGER"/>
+        <id column="del" property="del" jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <select id="getById" resultMap="resultMap" parameterType="java.lang.Integer">
+        select id, hierarchy, parentId, content, type
+        from tag
+        where id = #{id}
+    </select>
+
+    <select id="getLisyByHierarchy" resultMap="resultMap" parameterType="java.lang.Integer">
+        select id, hierarchy, parentId, content, type
+        from tag
+        where hierarchy = #{hierarchy}
+    </select>
+
+    <select id="getLisyByParentId" resultMap="resultMap" parameterType="java.lang.Integer">
+        select id, hierarchy, parentId, content, type
+        from tag
+        where parentId = #{parentId}
+    </select>
+    <insert id="insert" parameterType="com.example.demo.entity.Tag">
+        <selectKey resultType="Integer" keyProperty="id" order="AFTER">
+            select @@IDENTITY as id
+        </selectKey>
+        insert into tag (hierarchy, parentId, content, type) values(#{hierarchy},#{parentId},#{content},#{type})
+    </insert>
+</mapper>
